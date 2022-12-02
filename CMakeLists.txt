@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.20)
+
+project(adventofc++)
+
+add_executable(${PROJECT_NAME}
+    src/main.cpp
+    src/puzzles/p1/1.cpp
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+    src
+)
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC AOC_SRC_DIR_PATH="${PROJECT_SOURCE_DIR}/src")
