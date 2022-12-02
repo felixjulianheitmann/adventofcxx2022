@@ -13,4 +13,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC AOC_SRC_DIR_PATH="${PROJECT_SOURCE_DIR}/src")
+target_compile_definitions(${PROJECT_NAME} PUBLIC AOC_ROOT_DIR_PATH="${PROJECT_SOURCE_DIR}")
