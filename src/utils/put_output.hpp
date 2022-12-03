@@ -8,7 +8,7 @@
 
 namespace utils {
 
-    template < typename T > inline void answer( std::filesystem::path const & p, T const & answer )
+    template < typename T > inline T const & answer( std::filesystem::path const & p, T const & answer )
     {
         if ( !std::filesystem::exists( utils::get_solutions_dir() ) )
             std::filesystem::create_directories( utils::get_solutions_dir() );
@@ -28,6 +28,8 @@ namespace utils {
         else {
             throw std::runtime_error( "Could not convert type to string for answer output." );
         }
+
+        return answer;
     }
 
 }  // namespace utils

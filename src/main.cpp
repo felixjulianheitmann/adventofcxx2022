@@ -1,12 +1,14 @@
 #include <iostream>
 
-#include <puzzles/p1/1.hpp>
+#include <puzzles/1.hpp>
+#include <puzzles/2.hpp>
 #include <utils/path.hpp>
 
 auto main() -> int
 {
     try {
-        p1::puzzle( utils::get_src_dir() / "puzzles" / "p1" / "input.txt" );
+        p1::puzzle( utils::get_src_dir() / "puzzles" / "1_input.txt" );
+        p2::puzzle( utils::get_src_dir() / "puzzles" / "2_input.txt" );
     }
     catch ( std::exception const & e ) {
         std::cout << e.what() << std::endl;

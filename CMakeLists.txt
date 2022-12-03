@@ -4,7 +4,8 @@ project(adventofc++)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
-    src/puzzles/p1/1.cpp
+    src/puzzles/1.cpp
+    src/puzzles/2.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
