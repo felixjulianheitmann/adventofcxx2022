@@ -1,8 +1,6 @@
-#include <puzzles/2.hpp>
+#include <puzzles.hpp>
 
 #include <cassert>
-#include <utils/put_output.hpp>
-#include <utils/read_input.hpp>
 
 enum class rps {
     Undefined = -99,

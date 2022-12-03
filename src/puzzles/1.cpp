@@ -1,11 +1,8 @@
-#include <puzzles/1.hpp>
+#include <puzzles.hpp>
 
 #include <algorithm>
 #include <cassert>
 #include <numeric>
-
-#include <utils/put_output.hpp>
-#include <utils/read_input.hpp>
 
 void p1::puzzle( std::filesystem::path const & src_data )
 {
