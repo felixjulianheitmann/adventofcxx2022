@@ -25,5 +25,21 @@ void p3::puzzle( std::filesystem::path const & src_data )
         score += item_priority( common.front() );
     }
 
-    utils::answer( "3_1", score );
+    assert( ( 7821 == utils::answer( "3_1", score ) ) );
+
+    auto groups = utils::read_lines_as_chunks< std::string >( src_data, 3 );
+    score       = 0;
+    for ( auto & group : groups ) {
+        std::string common12;
+        std::string common123;
+        for ( auto & elf : group )
+            std::sort( elf.begin(), elf.end() );
+        std::set_intersection( group[0].begin(), group[0].end(), group[1].begin(), group[1].end(),
+                               std::back_inserter( common12 ) );
+        std::set_intersection( common12.begin(), common12.end(), group[2].begin(), group[2].end(),
+                               std::back_inserter( common123 ) );
+        score += item_priority( common123.front() );
+    }
+
+    assert( ( 2752 == utils::answer( "3_2", score ) ) );
 }

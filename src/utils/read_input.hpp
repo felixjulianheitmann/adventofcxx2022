@@ -84,4 +84,20 @@ namespace utils {
         return tmp;
     }
 
+    template < Number_or_String T >
+    inline auto read_lines_as_chunks( std::filesystem::path const & path, std::size_t n_lines )
+        -> std::vector< std::vector< T > >
+    {
+        auto lines = read_lines< T >( path );
+
+        std::vector< std::vector< T > > tmp;
+        std::size_t                     rotating_idx = 0;
+        for ( auto && line : lines ) {
+            if ( rotating_idx++ % n_lines == 0 )
+                tmp.push_back( {} );
+            tmp.back().push_back( line );
+        }
+        return tmp;
+    }
+
 }  // namespace utils
