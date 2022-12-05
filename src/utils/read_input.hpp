@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <ranges>
+#include <regex>
 #include <vector>
 
 namespace utils {
@@ -29,36 +30,60 @@ namespace utils {
         }
     }  // namespace detail
 
+    template < Number_or_String T > inline auto transform( std::string_view const str ) -> T
+    {
+        if constexpr ( std::is_same< T, char >() ) {
+            return str.front();
+        }
+        else if constexpr ( std::is_convertible< T, std::string >() ) {
+            return T{ str };
+        }
+        else if constexpr ( std::is_integral< T >() ) {
+            return static_cast< T >( std::stoll( std::string( str ) ) );
+        }
+        else if constexpr ( std::is_floating_point< T >() ) {
+            return static_cast< T >( std::stold( std::string( str ) ) );
+        }
+        else {
+            throw std::runtime_error( "Error during reading of input. Unimplemented string->type conversion" );
+        }
+    }
+
+    template < Number_or_String T > inline auto split_as( std::string_view const line, std::regex const & regex )
+    {
+        auto sline = std::string( line );
+        auto matches =
+            std::ranges::subrange( std::sregex_iterator( sline.begin(), sline.end(), regex ), std::sregex_iterator() ) |
+            std::views::transform( []( auto const match ) {
+                return transform< T >( match.str()
+            ); } );
+        return std::vector< T >( matches.begin(), matches.end() );
+    }
+
+    template < Number_or_String T >
+    inline auto split_as( std::ranges::forward_range auto const & lines, std::regex const & regex )
+        -> std::vector< std::vector< T > >
+    {
+        std::vector< std::vector< T > > splits;
+        for ( auto const & line : lines )
+            splits.push_back( split_as< T >( std::string_view{ line }, regex ) );
+        return splits;
+    }
+
     template < Number_or_String T >
     inline auto split_as( std::string_view const line, std::string_view const token ) -> std::vector< T >
     {
 
-        auto transformer = []( auto const line_split ) -> T {
-            auto line = std::string{ line_split.begin(), line_split.end() };
-            if constexpr ( std::is_same< T, char >() ) {
-                return line_split.front();
-            }
-            else if constexpr ( std::is_convertible< T, std::string >() ) {
-                return T{ line };
-            }
-            else if constexpr ( std::is_integral< T >() ) {
-                return static_cast< T >( std::stoll( line ) );
-            }
-            else if constexpr ( std::is_floating_point< T >() ) {
-                return static_cast< T >( std::stold( line ) );
-            }
-            else {
-                throw std::runtime_error( "Error during reading of input. Unimplemented string->type conversion" );
-            }
-        };
         auto splits = line | std::views::split( token ) |
                       std::views::filter( []( auto const & split ) { return !split.empty(); } ) |
-                      std::views::transform( transformer );
+                      std::views::transform( []( auto const & s ) {
+                          return transform< T >( { s.begin(), s.end() } );
+                      } );
         return std::vector< T >( splits.begin(), splits.end() );
     }
 
     template < Number_or_String T >
-    inline auto split_as( std::ranges::forward_range auto const lines, std::string_view const token )
+    inline auto split_as( std::ranges::forward_range auto const & lines, std::string_view const token )
         -> std::vector< std::vector< T > >
     {
         std::vector< std::vector< T > > splits;
