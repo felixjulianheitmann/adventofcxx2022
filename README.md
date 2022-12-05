@@ -1,2 +1,2 @@
-# adventofgo2022
-I am trying to solve some of the Advent of Code puzzles in Go
+# adventofc++2022
+I am trying to solve some of the Advent of Code puzzles in C++
