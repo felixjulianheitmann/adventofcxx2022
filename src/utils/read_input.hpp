@@ -51,7 +51,9 @@ namespace utils {
                 throw std::runtime_error( "Error during reading of input. Unimplemented string->type conversion" );
             }
         };
-        auto splits = line | std::views::split( token ) | std::views::transform( transformer );
+        auto splits = line | std::views::split( token ) |
+                      std::views::filter( []( auto const & split ) { return !split.empty(); } ) |
+                      std::views::transform( transformer );
         return std::vector< T >( splits.begin(), splits.end() );
     }
 
