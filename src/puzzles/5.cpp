@@ -21,6 +21,8 @@ void p5::puzzle( std::filesystem::path const & src_data )
         }
     }
 
+    auto stacks2 = stacks;
+    // Part one
     for ( auto const & cmd : chunks.back() ) {
         auto const splits = utils::split_as< std::string >( std::string_view( cmd ), " " );
         auto const count  = std::stol( splits[1] );
@@ -33,6 +35,28 @@ void p5::puzzle( std::filesystem::path const & src_data )
     }
 
     assert( ( "HNSNMTLHQ" == utils::answer( "5_1", std::accumulate( stacks.begin(), stacks.end(), std::string{},
+                                                                    []( auto const & str, auto const & stack ) {
+                                                                        return str + stack.top();
+                                                                    } ) ) ) );
+
+    // Part two
+    for ( auto const & cmd : chunks.back() ) {
+        auto const        splits = utils::split_as< std::string >( std::string_view( cmd ), " " );
+        auto const        count  = std::stol( splits[1] );
+        auto const        from   = std::stol( splits[3] );
+        auto const        to     = std::stol( splits[5] );
+        std::stack< int > tmp;
+        for ( auto i = 0; i < count; ++i ) {
+            tmp.push( stacks2[from - 1].top() );
+            stacks2[from - 1].pop();
+        }
+        while ( !tmp.empty() ) {
+            stacks2[to - 1].push( tmp.top() );
+            tmp.pop();
+        }
+    }
+
+    assert( ( "RNLFDJMCT" == utils::answer( "5_2", std::accumulate( stacks2.begin(), stacks2.end(), std::string{},
                                                                     []( auto const & str, auto const & stack ) {
                                                                         return str + stack.top();
                                                                     } ) ) ) );
