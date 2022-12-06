@@ -34,10 +34,10 @@ void p5::puzzle( std::filesystem::path const & src_data )
         }
     }
 
-    assert( ( "HNSNMTLHQ" == utils::answer( "5_1", std::accumulate( stacks.begin(), stacks.end(), std::string{},
-                                                                    []( auto const & str, auto const & stack ) {
-                                                                        return str + stack.top();
-                                                                    } ) ) ) );
+    assert( "HNSNMTLHQ" == utils::answer( "5_1", std::accumulate( stacks.begin(), stacks.end(), std::string{},
+                                                                  []( auto const & str, auto const & stack ) {
+                                                                      return str + stack.top();
+                                                                  } ) ) );
 
     // Part two
     for ( auto const & cmd : chunks.back() ) {
@@ -56,8 +56,8 @@ void p5::puzzle( std::filesystem::path const & src_data )
         }
     }
 
-    assert( ( "RNLFDJMCT" == utils::answer( "5_2", std::accumulate( stacks2.begin(), stacks2.end(), std::string{},
-                                                                    []( auto const & str, auto const & stack ) {
-                                                                        return str + stack.top();
-                                                                    } ) ) ) );
+    assert( "RNLFDJMCT" == utils::answer( "5_2", std::accumulate( stacks2.begin(), stacks2.end(), std::string{},
+                                                                  []( auto const & str, auto const & stack ) {
+                                                                      return str + stack.top();
+                                                                  } ) ) );
 }

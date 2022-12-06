@@ -25,7 +25,7 @@ void p3::puzzle( std::filesystem::path const & src_data )
         score += item_priority( common.front() );
     }
 
-    assert( ( 7821 == utils::answer( "3_1", score ) ) );
+    assert( 7821 == utils::answer( "3_1", score ) );
 
     auto groups = utils::read_lines_as_chunks< std::string >( src_data, 3 );
     score       = 0;
@@ -41,5 +41,5 @@ void p3::puzzle( std::filesystem::path const & src_data )
         score += item_priority( common123.front() );
     }
 
-    assert( ( 2752 == utils::answer( "3_2", score ) ) );
+    assert( 2752 == utils::answer( "3_2", score ) );
 }

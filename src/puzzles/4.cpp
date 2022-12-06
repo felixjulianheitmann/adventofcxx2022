@@ -19,7 +19,7 @@ void p4::puzzle( std::filesystem::path const & src_data )
              std::search( seq1.begin(), seq1.end(), seq0.begin(), seq0.end() ) != seq1.end() )
             ++matches;
     }
-    assert( ( 605 == utils::answer( "4_1", matches ) ) );
+    assert( 605 == utils::answer( "4_1", matches ) );
 
     matches = 0;
     for ( auto const & line : lines ) {
@@ -29,5 +29,5 @@ void p4::puzzle( std::filesystem::path const & src_data )
             ++matches;
     }
 
-    assert( ( 914 == utils::answer( "4_2", matches ) ) );
+    assert( 914 == utils::answer( "4_2", matches ) );
 }

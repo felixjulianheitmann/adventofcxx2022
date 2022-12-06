@@ -107,7 +107,7 @@ void p2::puzzle( std::filesystem::path const & src_data )
         score += get_hand_score( me ) + get_result_score( result );
     }
 
-    assert( ( 17189 == utils::answer( "2_1", score ) ) );
+    assert( 17189 == utils::answer( "2_1", score ) );
 
     // part 2
     score = 0;
@@ -117,5 +117,5 @@ void p2::puzzle( std::filesystem::path const & src_data )
         auto me     = get_target_hand( other, result );
         score += get_hand_score( me ) + get_result_score( result );
     }
-    utils::answer( "2_2", score );
+    assert( 13490 == utils::answer( "2_2", score ) );
 }

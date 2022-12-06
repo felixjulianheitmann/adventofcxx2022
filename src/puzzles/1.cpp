@@ -1,7 +1,5 @@
 #include <puzzles.hpp>
 
-#include <algorithm>
-#include <cassert>
 #include <numeric>
 
 void p1::puzzle( std::filesystem::path const & src_data )
@@ -16,6 +14,6 @@ void p1::puzzle( std::filesystem::path const & src_data )
 
     std::sort( elves.begin(), elves.end() );
 
-    assert( ( 69281 == utils::answer( "1_1", elves.back() ) ) );
-    assert( ( 201524 == utils::answer( "1_2", std::accumulate( elves.end() - 3, elves.end(), 0 ) ) ) );
+    assert( 69281 == utils::answer( "1_1", elves.back() ) );
+    assert( 201524 == utils::answer( "1_2", std::accumulate( elves.end() - 3, elves.end(), 0 ) ) );
 }
