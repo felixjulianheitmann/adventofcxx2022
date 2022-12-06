@@ -25,3 +25,7 @@ namespace p4 {
 namespace p5 {
     void puzzle( std::filesystem::path const & src_data );
 }  // namespace p5
+
+namespace p6 {
+    void puzzle( std::filesystem::path const & src_data );
+}  // namespace p6
