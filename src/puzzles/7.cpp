@@ -88,4 +88,15 @@ void p7::puzzle( std::filesystem::path const & src_data )
     } );
 
     assert( 1555642 == utils::answer( "7_1", counter ) );
+    constexpr std::size_t total_mem    = 70000000;
+    constexpr std::size_t update_mem   = 30000000;
+    auto const            free_mem     = total_mem - root.size();
+    auto const            required_mem = update_mem - free_mem;
+
+    std::vector< std::size_t > sizes;
+    root.iter_rec_subdirs( [&]( directory const & dir ) {
+        if ( auto size = dir.size(); size > required_mem )
+            sizes.push_back( dir.size() );
+    } );
+    assert( 5974547 == utils::answer( "7_2", std::ranges::min( sizes ) ) );
 }
