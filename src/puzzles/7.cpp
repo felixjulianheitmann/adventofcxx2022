@@ -2,17 +2,11 @@
 #include <unordered_map>
 #include <variant>
 
-class file;
 class directory;
+using file = std::size_t;
 using node = std::variant< file, directory >;
 
-struct file {
-    std::string name;
-    std::size_t size;
-};
-
 struct directory {
-    std::string                             name;
     std::unordered_map< std::string, node > subnodes;
     directory *                             parent;
 
@@ -21,7 +15,7 @@ struct directory {
         std::size_t size = 0;
         for ( auto const & [name, n] : subnodes ) {
             if ( file const * f = std::get_if< file >( &n ) )
-                size += f->size;
+                size += *f;
             else if ( directory const * dir = std::get_if< directory >( &n ) )
                 size += dir->size();
         }
@@ -44,7 +38,6 @@ void p7::puzzle( std::filesystem::path const & src_data )
     auto lines = utils::read_lines< std::string >( src_data );
 
     directory root{
-        .name     = "/",
         .subnodes = {},
         .parent   = nullptr,
     };
@@ -67,15 +60,14 @@ void p7::puzzle( std::filesystem::path const & src_data )
                 auto sub_path = line.substr( 4 );
 
                 current_dir->subnodes[sub_path] = directory{
-                    .name     = sub_path,
                     .subnodes = {},
                     .parent   = current_dir,
                 };
             }
             else {
                 auto split                          = utils::split_as< std::string >( std::string_view( line ), " " );
-                current_dir->subnodes[split.back()] = file{ .name = split.back(), .size = std::stoul( split.front() ) };
-            }
+                current_dir->subnodes[split.back()] = file{ std::stoul( split.front() ) };
+            };
         }
     }
 
@@ -88,6 +80,8 @@ void p7::puzzle( std::filesystem::path const & src_data )
     } );
 
     assert( 1555642 == utils::answer( "7_1", counter ) );
+
+    // part 2
     constexpr std::size_t total_mem    = 70000000;
     constexpr std::size_t update_mem   = 30000000;
     auto const            free_mem     = total_mem - root.size();
