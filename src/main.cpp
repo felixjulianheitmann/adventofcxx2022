@@ -13,6 +13,7 @@ auto main() -> int
         p4::puzzle( utils::get_src_dir() / "puzzles" / "4_input.txt" );
         p5::puzzle( utils::get_src_dir() / "puzzles" / "5_input.txt" );
         p6::puzzle( utils::get_src_dir() / "puzzles" / "6_input.txt" );
+        p7::puzzle( utils::get_src_dir() / "puzzles" / "7_input.txt" );
     }
     catch ( std::exception const & e ) {
         std::cout << e.what() << std::endl;
