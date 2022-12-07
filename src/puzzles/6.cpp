@@ -1,7 +1,5 @@
 #include <puzzles.hpp>
 
-constexpr std::string_view g = #embed< 6_input.txt >;
-
 void p6::puzzle( std::filesystem::path const & src_data )
 {
     auto       stream     = utils::read_lines< std::string >( src_data ).front();
