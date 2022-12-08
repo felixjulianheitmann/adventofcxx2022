@@ -12,4 +12,8 @@ namespace utils {
     {
         return std::filesystem::path( AOC_ROOT_DIR_PATH ) / "solutions";
     }
+    inline auto get_input_dir() -> std::filesystem::path
+    {
+        return std::filesystem::path( AOC_ROOT_DIR_PATH ) / "inputs";
+    }
 }  // namespace utils
