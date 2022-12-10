@@ -17,18 +17,19 @@ void p8::puzzle( std::filesystem::path const & src_data )
         auto row     = all | drop( y * len_x ) | take( len_x );
         auto col     = all | drop( x ) |
                    filter( [i = 0, &len_x]( auto ) mutable { return i++ % len_x == 0; } );  // No stride available
-        auto left  = row | take( x );
+        auto left  = row | take( x ) | reverse;
         auto right = row | drop( x + 1 );
-        auto up    = col | take( y );
+        auto up    = col | take( y ) | reverse;
         auto down  = col | drop( y + 1 );
         return std::make_tuple( current, up, down, left, right );
     };
 
+    // part 2
     auto is_visible = [&]( std::size_t x, std::size_t y ) {
         auto [current, up, down, left, right] = get_directions( x, y );
-        auto comp                             = [&]( char const c ) { return c < current; };
-        if ( std::ranges::all_of( up, comp ) || std::ranges::all_of( left, comp ) ||
-             std::ranges::all_of( down, comp ) || std::ranges::all_of( right, comp ) ) {
+        auto smaller                          = [&]( char const c ) { return c < current; };
+        if ( std::ranges::all_of( up, smaller ) || std::ranges::all_of( left, smaller ) ||
+             std::ranges::all_of( down, smaller ) || std::ranges::all_of( right, smaller ) ) {
             return true;
         }
         return false;
@@ -41,27 +42,29 @@ void p8::puzzle( std::filesystem::path const & src_data )
             visible_trees += is_visible( x, y );
         }
     }
+    assert( 1807 == utils::answer( "8_1", visible_trees + 2 * ( len_x + len_y ) - 4 ) );
 
     auto scenic_score = [&]( std::size_t x, std::size_t y ) {
         auto [current, up, down, left, right] = get_directions( x, y );
         auto score                            = 0;
         auto count_dist                       = [&]( auto dir ) {
+            auto dir_score = 0;
             for ( auto tree : dir ) {
                 if ( tree < current )
-                    score += 1;
+                    dir_score += 1;
                 else
-                    return;
+                    return ++dir_score;
             }
+            return dir_score;
         };
 
-        count_dist( up );
-        count_dist( down );
-        count_dist( left );
-        count_dist( right );
+        score = count_dist( up );
+        score *= count_dist( down );
+        score *= count_dist( left );
+        score *= count_dist( right );
         return score;
     };
 
-    // part 2
     int top_score = 0;
     for ( std::size_t y = 0; y < rows.size(); ++y ) {
         for ( std::size_t x = 0; x < rows.size(); ++x ) {
@@ -70,5 +73,5 @@ void p8::puzzle( std::filesystem::path const & src_data )
         }
     }
 
-    assert( 1807 == utils::answer( "8_1", visible_trees + 2 * ( len_x ) + 2 * ( len_y - 1 ) ) );
+    assert( 480000 == utils::answer( "8_2", top_score ) );
 }
