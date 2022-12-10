@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME}
     src/puzzles/6.cpp
     src/puzzles/7.cpp
     src/puzzles/8.cpp
+    src/puzzles/9.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
