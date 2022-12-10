@@ -12,19 +12,23 @@ void p8::puzzle( std::filesystem::path const & src_data )
     auto len_y = rows.size();
     auto all   = std::accumulate( rows.begin(), rows.end(), std::string{} );
 
-    auto get_iterators = [&]( std::size_t x, std::size_t y ) {
+    auto get_directions = [&]( std::size_t x, std::size_t y ) {
         auto current = all[y * len_x + x];
         auto row     = all | drop( y * len_x ) | take( len_x );
         auto col     = all | drop( x ) |
                    filter( [i = 0, &len_x]( auto ) mutable { return i++ % len_x == 0; } );  // No stride available
-        return std::make_tuple( current, row, col );
+        auto left  = row | take( x );
+        auto right = row | drop( x + 1 );
+        auto up    = col | take( y );
+        auto down  = col | drop( y + 1 );
+        return std::make_tuple( current, up, down, left, right );
     };
 
     auto is_visible = [&]( std::size_t x, std::size_t y ) {
-        auto [current, row, col] = get_iterators( x, y );
-        auto comp                = [&]( char const c ) { return c < current; };
-        if ( std::ranges::all_of( row | take( x ), comp ) || std::ranges::all_of( row | drop( x + 1 ), comp ) ||
-             std::ranges::all_of( col | take( y ), comp ) || std::ranges::all_of( col | drop( y + 1 ), comp ) ) {
+        auto [current, up, down, left, right] = get_directions( x, y );
+        auto comp                             = [&]( char const c ) { return c < current; };
+        if ( std::ranges::all_of( up, comp ) || std::ranges::all_of( left, comp ) ||
+             std::ranges::all_of( down, comp ) || std::ranges::all_of( right, comp ) ) {
             return true;
         }
         return false;
@@ -39,7 +43,22 @@ void p8::puzzle( std::filesystem::path const & src_data )
     }
 
     auto scenic_score = [&]( std::size_t x, std::size_t y ) {
-        auto [current, row, col] = get_iterators( x, y );
+        auto [current, up, down, left, right] = get_directions( x, y );
+        auto score                            = 0;
+        auto count_dist                       = [&]( auto dir ) {
+            for ( auto tree : dir ) {
+                if ( tree < current )
+                    score += 1;
+                else
+                    return;
+            }
+        };
+
+        count_dist( up );
+        count_dist( down );
+        count_dist( left );
+        count_dist( right );
+        return score;
     };
 
     // part 2
@@ -51,5 +70,5 @@ void p8::puzzle( std::filesystem::path const & src_data )
         }
     }
 
-    assert( 1807 0 = utils::answer( "8_1", visible_trees + 2 * ( rows.size() - 1 ) + 2 * ( rows[0].size() - 1 ) ) );
+    assert( 1807 == utils::answer( "8_1", visible_trees + 2 * ( len_x ) + 2 * ( len_y - 1 ) ) );
 }
