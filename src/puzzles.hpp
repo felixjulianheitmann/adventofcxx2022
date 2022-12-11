@@ -41,3 +41,7 @@ namespace p8 {
 namespace p9 {
     void puzzle( std::filesystem::path const & src_data );
 }  // namespace p9
+
+namespace p10 {
+    void puzzle( std::filesystem::path const & src_data );
+}  // namespace p10
