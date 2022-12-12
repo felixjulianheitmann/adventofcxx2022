@@ -16,7 +16,9 @@ auto main() -> int
         // p7::puzzle( utils::get_input_dir() / "7_input.txt" );
         // p8::puzzle( utils::get_input_dir() / "8_input.txt" );
         // p9::puzzle( utils::get_input_dir() / "9_input.txt" );
-        p10::puzzle( utils::get_input_dir() / "10_input.txt" );
+        // p10::puzzle( utils::get_input_dir() / "10_input.txt" );
+        // p11::puzzle( utils::get_input_dir() / "11_input.txt" );
+        p12::puzzle( utils::get_input_dir() / "12_input.txt" );
     }
     catch ( std::exception const & e ) {
         std::cout << e.what() << std::endl;
